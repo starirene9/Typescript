@@ -138,3 +138,45 @@ const result1 = addToCart("c001", 1);
 console.log(`결과1: ${result1}`);
 console.log(stock, cart);
 const result2 = addToCart("c002", 2);
+
+// enum 열거형
+
+enum Size {
+  S = "S",
+  M = "M",
+  L = "L",
+  XL = "XL", // enum은 되도록 값을 정하고 사용할 것
+}
+
+interface Clothe {
+  // 타입을 interface로 지정
+  id: string;
+  name: string;
+  price: number;
+  memberdOnly?: boolean;
+}
+
+interface ClothingProduct extends Clothe {
+  // 상속이 가능하다
+  sizes: Size[];
+}
+
+let clothe1: ClothingProduct = {
+  // interface를 적고 나머지 적으면 됨
+  id: "c001",
+  name: "코드잇 블랙 후디",
+  price: 1000,
+  sizes: [Size.M, Size.L],
+};
+
+// console.log(Size.M);
+
+interface PrintProductFunction {
+  (product: Clothe): void;
+}
+
+const printProduct: PrintProductFunction = (product) => {
+  console.log(`${product.name}의 가격은 ${product.price}원 입니다.`);
+};
+
+printProduct;
