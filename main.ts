@@ -156,18 +156,18 @@ interface Clothe {
   memberdOnly?: boolean;
 }
 
-interface ClothingProduct extends Clothe {
-  // 상속이 가능하다
-  sizes: Size[];
-}
+// interface ClothingProduct extends Clothe {
+//   // 상속이 가능하다
+//   sizes: Size[];
+// }
 
-let clothe1: ClothingProduct = {
-  // interface를 적고 나머지 적으면 됨
-  id: "c001",
-  name: "코드잇 블랙 후디",
-  price: 1000,
-  sizes: [Size.M, Size.L],
-};
+// let clothe1: ClothingProduct = {
+//   // interface를 적고 나머지 적으면 됨
+//   id: "c001",
+//   name: "코드잇 블랙 후디",
+//   price: 1000,
+//   sizes: [Size.M, Size.L],
+// };
 
 // console.log(Size.M);
 
@@ -180,3 +180,68 @@ const printProduct: PrintProductFunction = (product) => {
 };
 
 printProduct;
+
+// literal type
+
+let productName1 = "제품1"; // let : string type
+const productName2 = "제품2"; // const : 문자열이 type <== literal type : 변수값이 타입
+
+let small = 95; // 숫자형은 literal type에 포함되지 않음
+const large = 100; // 100인 값을 타입으로 함
+
+function printSize(size: number) {
+  // size : 1인 literal로 하면 받을 수 없음
+  console.log(`${size} 사이즈 입니다.`);
+}
+
+printSize(small);
+printSize(large);
+
+// Type Elias 타입 별칭이 존재함
+type Cart = string[]; // 이렇게 Cart라는 별칭을 지어주면 여기에서 타입 수정 한번에 가능
+
+type CartResultCallback = (result: boolean) => void;
+
+interface Product {
+  // 일반적으로 interface 사용
+  id: string;
+  name: string;
+}
+
+const carts: Cart = ["c001", "c002", "c003"];
+
+enum ClothingSize {
+  S = "S",
+  M = "M",
+  L = "L",
+}
+
+interface ClothingProduct extends Product {
+  sizes: ClothingSize[];
+  color: string;
+}
+
+type ShoeSize = 220 | 225 | 230 | 235 | 240 | 245; //literal type & union
+
+interface ShoeProduct extends Product {
+  sizes: ShoeSize[];
+  handmade: boolean;
+}
+// Union type | 이런 것 : a or b인 경우에 사용 <== 논리연산자와 비슷함
+// sizes의 타입이 다름
+function printSizes(product: ClothingProduct | ShoeProduct) {
+  // union
+  const availableSizes = product.sizes.join(", ");
+  console.log(`구매 가능한 사이즈는 다음과 같습니다 ${availableSizes}`);
+
+  // 아래와 같이 다르게 처리 가능
+  if ("color" in product) {
+    console.log(product.color);
+  }
+
+  if ("handmade" in product) {
+    console.log(product.handmade ? "장인 제품" : "공장 제품");
+  }
+}
+
+// 언제 enum을 쓰고 언제 type elias와 union을 쓰는가?
