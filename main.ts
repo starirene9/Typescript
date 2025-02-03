@@ -197,7 +197,7 @@ function printSize(size: number) {
 printSize(small);
 printSize(large);
 
-// Type Elias 타입 별칭이 존재함
+// Type Elias 타입 별칭이 존재함 vs Enum 열거형
 type Cart = string[]; // 이렇게 Cart라는 별칭을 지어주면 여기에서 타입 수정 한번에 가능
 
 type CartResultCallback = (result: boolean) => void;
@@ -245,3 +245,83 @@ function printSizes(product: ClothingProduct | ShoeProduct) {
 }
 
 // 언제 enum을 쓰고 언제 type elias와 union을 쓰는가?
+
+// intersection은 여러 타입을 합칠때 사용함 , extends 상속으로도 사용 가능
+
+interface Id {
+  id: string;
+}
+
+interface Timestamp {
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+type Products = Id & {
+  name: string;
+  price: number;
+  membersOnly?: boolean;
+};
+
+type User = Timestamp & {
+  username: string;
+  email: string;
+};
+
+type Review = Id &
+  Timestamp & {
+    productId: string;
+  };
+
+// key of , typeof : 타입을 문자열로 만들어줌
+
+interface Example {
+  id: string;
+  name: string;
+  price: number;
+  salePrice: number; // 여기에서 추가
+  membersOnly?: boolean;
+}
+
+type ProductProperty = keyof Example; // 이렇게하면 key 값을 가져옴
+
+const productTableKeys: ProductProperty[] = [
+  // (keyof Product)[] 이렇게 바로 사용하기 가능함
+  "name",
+  "price",
+  "membersOnly",
+  "salePrice", //자동 완성 됨
+];
+
+const example: Example = {
+  id: "a",
+  name: "Bitna",
+  price: 2000,
+  salePrice: 1500,
+};
+
+console.log(typeof example); // 자바스크립트니까 타입이 string으로 나오고
+
+// typeof : 이미 존재하는 타입을 가지고 와서 타입을 정의할때 사용
+let exmaple2: typeof example; // 타입스크립트니까 타입이 example로 나옴
+
+// generic type
+const shoesSizes: number[] = [230, 235, 240];
+shoesSizes.map((num) => {});
+
+const clothingSizes: string[] = ["M", "L", "XL"];
+clothingSizes.map((names) => {});
+
+function printArray<T>(items: T[]) {
+  // type parameter T U V로 임의의 타입을 표현함
+  for (const item of items) {
+    console.log(item);
+  }
+}
+
+printArray(shoesSizes); // 마우스 대면 각각 타입이 추론됨
+printArray(clothingSizes);
+
+const map = new Map<string, Example>();
+
+// generic type은 보통 T, V, U 안에서 사용함
