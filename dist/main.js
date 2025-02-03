@@ -118,10 +118,70 @@ var Size;
     Size["L"] = "L";
     Size["XL"] = "XL";
 })(Size || (Size = {}));
-let clothe = {
-    id: "c001",
-    name: "코드잇 블랙 후디",
-    price: 1000,
-    sizes: [Size.M, Size.L],
+const printProduct = (product) => {
+    console.log(`${product.name}의 가격은 ${product.price}원 입니다.`);
 };
-console.log(Size.M);
+printProduct;
+// literal type
+let productName1 = "제품1"; // let : string type
+const productName2 = "제품2"; // const : 문자열이 type <== literal type : 변수값이 타입
+let small = 95; // 숫자형은 literal type에 포함되지 않음
+const large = 100; // 100인 값을 타입으로 함
+function printSize(size) {
+    // size : 1인 literal로 하면 받을 수 없음
+    console.log(`${size} 사이즈 입니다.`);
+}
+printSize(small);
+printSize(large);
+const carts = ["c001", "c002", "c003"];
+var ClothingSize;
+(function (ClothingSize) {
+    ClothingSize["S"] = "S";
+    ClothingSize["M"] = "M";
+    ClothingSize["L"] = "L";
+})(ClothingSize || (ClothingSize = {}));
+// Union type | 이런 것 : a or b인 경우에 사용 <== 논리연산자와 비슷함
+// sizes의 타입이 다름
+function printSizes(product) {
+    // union
+    const availableSizes = product.sizes.join(", ");
+    console.log(`구매 가능한 사이즈는 다음과 같습니다 ${availableSizes}`);
+    // 아래와 같이 다르게 처리 가능
+    if ("color" in product) {
+        console.log(product.color);
+    }
+    if ("handmade" in product) {
+        console.log(product.handmade ? "장인 제품" : "공장 제품");
+    }
+}
+const productTableKeys = [
+    // (keyof Product)[] 이렇게 바로 사용하기 가능함
+    "name",
+    "price",
+    "membersOnly",
+    "salePrice", //자동 완성 됨
+];
+const example = {
+    id: "a",
+    name: "Bitna",
+    price: 2000,
+    salePrice: 1500,
+};
+console.log(typeof example); // 자바스크립트니까 타입이 string으로 나오고
+// typeof : 이미 존재하는 타입을 가지고 와서 타입을 정의할때 사용
+let exmaple2; // 타입스크립트니까 타입이 example로 나옴
+// generic type
+const shoesSizes = [230, 235, 240];
+shoesSizes.map((num) => { });
+const clothingSizes = ["M", "L", "XL"];
+clothingSizes.map((names) => { });
+function printArray(items) {
+    // type parameter T U V로 임의의 타입을 표현함
+    for (const item of items) {
+        console.log(item);
+    }
+}
+printArray(shoesSizes); // 마우스 대면 각각 타입이 추론됨
+printArray(clothingSizes);
+const map = new Map();
+// generic type은 보통 T, V, U 안에서 사용함
